@@ -1,35 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect, Suspense, lazy } from "react";
+import { Routes, Route } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Loading from "./components/Loading";
+import { userState } from "./store/userState";
+import { authState } from "./store/authState";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
-function App() {
-  const [count, setCount] = useState(0)
+const Signin = lazy(() => import("./pages/Signin"));
+const Home = lazy(() => import("./pages/Home"));
+const Settings = lazy(() => import("./pages/Settings"));
+const CreateTodo = lazy(() => import("./pages/CreateTodo"));
+const UpdateTodo = lazy(() => import("./pages/UpdateTodo"));
+const AllTodos = lazy(() => import("./pages/AllTodos"));
+const Not_Found = lazy(() => import("./pages/Not-Found"));
+const ProtectedRoute = lazy(() => import("./components/protectedRoute"));
+
+const App = () => {
+  const setUser = useSetRecoilState(userState);
+  const [isAuth, setIsAuth] = useRecoilState(authState);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = "Bearer " + localStorage.getItem("token");
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/user/me",
+          {
+            headers: {
+              token: token,
+            },
+          }
+        );
+
+        if (response.data) {
+          setUser(response.data);
+          setIsAuth(true);
+        } else {
+          setIsAuth(false);
+          setUser({});
+          navigate("/");
+        }
+      } catch (error) {
+        setIsAuth(false);
+      } finally {
+        if (isAuth) {
+          navigate("/home");
+        }
+      }
+    };
+
+    fetchUser();
+  }, [isAuth]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Suspense
+      fallback={
+        <div>
+          <Loading />
+        </div>
+      }
+    >
+      <Routes>
+        <Route path="/" element={<Signin />} />
+        <Route path="/*" element={<Not_Found />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/all" element={<AllTodos />} />
+          <Route path="/setting/:userId" element={<Settings />} />
+          <Route path="/create/:userId" element={<CreateTodo />} />
+          <Route path="/update/:todoId" element={<UpdateTodo />} />
+        </Route>
+      </Routes>
+    </Suspense>
+  );
+};
 
-export default App
+export default App;
