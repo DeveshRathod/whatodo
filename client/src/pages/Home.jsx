@@ -1,12 +1,9 @@
 import React from "react";
-import { userState } from "../store/userState";
-import { useRecoilState } from "recoil";
+
+import Layout from "../components/Layout";
 
 const Home = () => {
-  const [user, setUser] = useRecoilState(userState);
-  console.log(user);
-
-  return <div>Home</div>;
+  return <Layout>Content</Layout>;
 };
 
 export default Home;

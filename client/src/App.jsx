@@ -1,20 +1,17 @@
-import React, { useState, useEffect, Suspense, lazy } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Loading from "./components/Loading";
 import { userState } from "./store/userState";
 import { authState } from "./store/authState";
 import { useRecoilState, useSetRecoilState } from "recoil";
-
-const Signin = lazy(() => import("./pages/Signin"));
-const Home = lazy(() => import("./pages/Home"));
-const Settings = lazy(() => import("./pages/Settings"));
-const CreateTodo = lazy(() => import("./pages/CreateTodo"));
-const UpdateTodo = lazy(() => import("./pages/UpdateTodo"));
-const AllTodos = lazy(() => import("./pages/AllTodos"));
-const Not_Found = lazy(() => import("./pages/Not-Found"));
-const ProtectedRoute = lazy(() => import("./components/protectedRoute"));
+import Signin from "./pages/Signin";
+import Home from "./pages/Home";
+import Settings from "./pages/Settings";
+import CreateTodo from "./pages/CreateTodo";
+import UpdateTodo from "./pages/UpdateTodo";
+import Not_Found from "./pages/Not-Found";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const setUser = useSetRecoilState(userState);
@@ -55,25 +52,16 @@ const App = () => {
   }, [isAuth]);
 
   return (
-    <Suspense
-      fallback={
-        <div>
-          <Loading />
-        </div>
-      }
-    >
-      <Routes>
-        <Route path="/" element={<Signin />} />
-        <Route path="/*" element={<Not_Found />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="/home" element={<Home />} />
-          <Route path="/all" element={<AllTodos />} />
-          <Route path="/setting/:userId" element={<Settings />} />
-          <Route path="/create/:userId" element={<CreateTodo />} />
-          <Route path="/update/:todoId" element={<UpdateTodo />} />
-        </Route>
-      </Routes>
-    </Suspense>
+    <Routes>
+      <Route path="/" element={<Signin />} />
+      <Route path="/*" element={<Not_Found />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/home" element={<Home />} />
+        <Route path="/setting" element={<Settings />} />
+        <Route path="/create" element={<CreateTodo />} />
+        <Route path="/update/:todoId" element={<UpdateTodo />} />
+      </Route>
+    </Routes>
   );
 };
 
