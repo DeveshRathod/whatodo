@@ -1,10 +1,6 @@
 // App.js
-import React, { useEffect } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useSetRecoilState } from "recoil";
-import { userState } from "./store/userState";
-import { authState } from "./store/authState";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 import Signin from "./pages/Signin";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
@@ -16,42 +12,6 @@ import CompletedTodos from "./pages/CompletedTodos";
 import IncompleteTodos from "./pages/IncompleteTodos";
 
 const App = () => {
-  const setUser = useSetRecoilState(userState);
-  const setAuth = useSetRecoilState(authState);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (token) {
-          const response = await axios.get(
-            "http://localhost:4000/api/v1/user/me",
-            {
-              headers: {
-                token: `${token}`,
-              },
-            }
-          );
-
-          const userData = response.data;
-          setUser(userData);
-          setAuth(true);
-        } else {
-          setAuth(false);
-          setUser({});
-          navigate("/signin");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error.message);
-        setAuth(false);
-        setUser({});
-      }
-    };
-
-    fetchUser();
-  }, []);
-
   return (
     <Routes>
       <Route path="/signin" element={<Signin />} />
