@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
@@ -7,48 +7,6 @@ import { useRecoilState } from "recoil";
 import { userState } from "../store/userState";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import RuleIcon from "@mui/icons-material/Rule";
-
-const Filter = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  return (
-    <div className="relative">
-      <button
-        type="button"
-        className="py-2 px-4 rounded-lg bg-gray-800 text-white"
-        onClick={toggleDropdown}
-      >
-        Filter
-      </button>
-      {isOpen && (
-        <div className="absolute top-full left-0 z-10 bg-white border border-gray-200 shadow-md rounded-lg mt-1">
-          <a
-            href="#"
-            className="block py-2 px-4 text-gray-800 hover:bg-gray-100"
-          >
-            Option 1
-          </a>
-          <a
-            href="#"
-            className="block py-2 px-4 text-gray-800 hover:bg-gray-100"
-          >
-            Option 2
-          </a>
-          <a
-            href="#"
-            className="block py-2 px-4 text-gray-800 hover:bg-gray-100"
-          >
-            Option 3
-          </a>
-        </div>
-      )}
-    </div>
-  );
-};
 
 const Layout = ({ children }) => {
   const [user, setUser] = useRecoilState(userState);
@@ -61,9 +19,9 @@ const Layout = ({ children }) => {
         </div>
         <div className="flex flex-col gap-4 sm:gap-8 mt-8">
           <NavLink
-            to="/home"
+            to="/"
             className="py-2 sm:py-3 px-4 sm:px-6 rounded-xl customBg2 flex items-center justify-center sm:justify-start gap-1"
-            activeClassName="active"
+            activeclassname="active"
           >
             <HomeIcon style={{ fontSize: 24 }} />
             <span className="hidden sm:inline text-sm">Home</span>
@@ -71,7 +29,7 @@ const Layout = ({ children }) => {
           <NavLink
             to="/create"
             className="py-2 sm:py-3 px-4 sm:px-6 rounded-xl customBg2 flex items-center justify-center sm:justify-start gap-1"
-            activeClassName="active"
+            activeclassname="active"
           >
             <AddIcon style={{ fontSize: 24 }} />
             <span className="hidden sm:inline text-sm">Add</span>
@@ -79,7 +37,7 @@ const Layout = ({ children }) => {
           <NavLink
             to="/complete"
             className="py-2 sm:py-3 px-4 sm:px-6 rounded-xl customBg2 flex items-center justify-center sm:justify-start gap-1"
-            activeClassName="active"
+            activeclassname="active"
           >
             <ChecklistIcon style={{ fontSize: 24 }} />
             <span className="hidden sm:inline text-sm">Completed</span>
@@ -87,7 +45,7 @@ const Layout = ({ children }) => {
           <NavLink
             to="/incomplete"
             className="py-2 sm:py-3 px-4 sm:px-6 rounded-xl customBg2 flex items-center justify-center sm:justify-start gap-1"
-            activeClassName="active"
+            activeclassname="active"
           >
             <RuleIcon style={{ fontSize: 24 }} />
             <span className="hidden sm:inline text-sm">Incomplete</span>
@@ -95,7 +53,7 @@ const Layout = ({ children }) => {
           <NavLink
             to="/setting"
             className="py-2 sm:py-3 px-4 sm:px-6 rounded-xl customBg2 flex items-center justify-center sm:justify-start gap-1"
-            activeClassName="active"
+            activeclassname="active"
           >
             <SettingsIcon style={{ fontSize: 24 }} />
             <span className="hidden sm:inline text-sm">Settings</span>
@@ -105,22 +63,17 @@ const Layout = ({ children }) => {
       <div className="flex flex-col w-4/5">
         <div className="h-20 customBg2 flex p-3 justify-end pr-6">
           <div>
-            <img src={user.avatar} alt="User" className="w-12 rounded-full" />
+            <img
+              src={user.avatar}
+              alt="User"
+              className="w-12 h-12 rounded-full object-cover"
+            />
           </div>
         </div>
         <div className="flex-grow customBg3 flex flex-col sm:w-full">
-          <div className="h-20 sm:h-15">
-            <div className="flex justify-between items-center p-1 sm:p-4  flex-col-reverse sm:flex-row">
-              <div>
-                <Filter />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  className="text-white bg-gray-800 px-6 py-2 rounded-md w-full sm:w-auto mt-2 sm:mt-0 text-sm sm:text-base"
-                  placeholder="Search..."
-                />
-              </div>
+          <div className="h-25 sm:h-20">
+            <div className="flex justify-between items-center p-1 sm:p-4  flex-col sm:flex-row-reverse">
+              {/* No filter or search inputs */}
             </div>
           </div>
 

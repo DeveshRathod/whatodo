@@ -90,3 +90,50 @@ export const checkme = async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+//update user
+// update user controller
+export const updateUser = async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const updatedData = {};
+    for (const key in req.body) {
+      if (key === "password" && req.body[key]) {
+        updatedData[key] = await bcrypt.hash(req.body[key], 10);
+      } else if (req.body[key] !== "") {
+        updatedData[key] = req.body[key];
+      }
+    }
+
+    const user = await User.findOneAndUpdate({ _id: userId }, updatedData, {
+      new: true,
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const user = await User.findOneAndDelete({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};

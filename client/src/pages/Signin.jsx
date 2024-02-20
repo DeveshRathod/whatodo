@@ -31,10 +31,10 @@ const Signin = () => {
         }
       );
       if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", "Bearer " + response.data.token);
         setIsAuth(true);
         setUser(response.data.user);
-        navigate("/home");
+        navigate("/");
       } else {
         console.error("Invalid response data");
       }

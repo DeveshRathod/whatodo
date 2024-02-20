@@ -1,16 +1,12 @@
+// PrivateRoute.js
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { authState } from "../store/authState";
 import { useRecoilValue } from "recoil";
+import { authState } from "../store/authState";
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ element }) => {
   const isAuth = useRecoilValue(authState);
-  return isAuth ? (
-    <>
-      <Outlet />
-    </>
-  ) : (
-    <Navigate to="/" />
-  );
+  return isAuth ? <Outlet /> : "";
 };
 
 export default PrivateRoute;

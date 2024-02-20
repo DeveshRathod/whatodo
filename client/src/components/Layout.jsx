@@ -7,7 +7,6 @@ import { useRecoilState } from "recoil";
 import { userState } from "../store/userState";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import RuleIcon from "@mui/icons-material/Rule";
-import Filter from "./Filter";
 
 const Layout = ({ children }) => {
   const [user, setUser] = useRecoilState(userState);
@@ -20,7 +19,7 @@ const Layout = ({ children }) => {
         </div>
         <div className="flex flex-col gap-4 sm:gap-8 mt-8">
           <NavLink
-            to="/home"
+            to="/"
             className="py-2 sm:py-3 px-4 sm:px-6 rounded-xl customBg2 flex items-center justify-center sm:justify-start gap-1"
             activeclassname="active"
           >
@@ -64,7 +63,12 @@ const Layout = ({ children }) => {
       <div className="flex flex-col w-4/5">
         <div className="h-20 customBg2 flex p-3 justify-end pr-6">
           <div>
-            <img src={user.avatar} alt="User" className="w-12 rounded-full" />
+            {/* Apply styles for user image */}
+            <img
+              src={user.avatar}
+              alt="User"
+              className="w-12 h-12 rounded-full object-cover"
+            />
           </div>
         </div>
         <div className="flex-grow customBg3 flex flex-col sm:w-full">
@@ -87,10 +91,11 @@ const Layout = ({ children }) => {
                 </div>
                 <div>
                   <select className="text-white bg-gray-800 px-4 py-2 rounded-md sm:w-auto mt-2 sm:mt-0 text-sm sm:text-base">
-                    <option value="">Priority</option>
-                    <option value="filter1">Low</option>
-                    <option value="filter2">Medium</option>
-                    <option value="filter3">High</option>
+                    <option className=" text-red-500" value="">
+                      Priority
+                    </option>
+                    <option value="filter1">Low - High</option>
+                    <option value="filter2">High - Low</option>
                   </select>
                 </div>
               </div>
