@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../store/userState";
 import axios from "axios";
 
-const PrivateRoute = ({ element }) => {
+const PrivateRoute = () => {
   const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
 

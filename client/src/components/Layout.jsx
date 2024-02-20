@@ -3,13 +3,13 @@ import { NavLink } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import RuleIcon from "@mui/icons-material/Rule";
 
 const Layout = ({ children }) => {
-  const [user, setUser] = useRecoilState(userState);
+  const user = useRecoilValue(userState);
 
   return (
     <div className="flex flex-row w-full h-screen text-white">

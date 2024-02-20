@@ -46,9 +46,9 @@ const Signup = () => {
       );
       if (response.data.token) {
         localStorage.setItem("token", "Bearer " + response.data.token);
+        setUser(response.data.user);
         setLoading(false);
         navigate("/");
-        setUser(response.data.user);
         setUsername("");
         setEmail("");
         setPassword("");
