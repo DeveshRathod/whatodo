@@ -4,11 +4,23 @@ import jwt from "jsonwebtoken";
 
 //signup controller
 export const signUp = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, confirmPassword } = req.body;
+  if (
+    username == "" ||
+    email == "" ||
+    password == "" ||
+    confirmPassword == ""
+  ) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
+    }
+
+    if (password != confirmPassword) {
+      return res.status(400).json({ message: "Passwords not matching" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -22,7 +34,7 @@ export const signUp = async (req, res) => {
         email: newUser.email,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "24h" }
     );
 
     res.status(201).json({ message: "User created successfully", token });
@@ -55,7 +67,7 @@ export const signIn = async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, username: user.username, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "24h" }
     );
 
     const userWithoutSensitiveData = {

@@ -10,11 +10,13 @@ import Not_Found from "./pages/Not-Found";
 import PrivateRoute from "./components/ProtectedRoute";
 import CompletedTodos from "./pages/CompletedTodos";
 import IncompleteTodos from "./pages/IncompleteTodos";
+import Signup from "./pages/Signup";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/signin" element={<Signin />} />
+      <Route path="/signup" element={<Signup />} />
       <Route path="/*" element={<Not_Found />} />
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Home />} />

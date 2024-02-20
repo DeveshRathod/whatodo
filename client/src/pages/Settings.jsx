@@ -1,21 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../components/SettingsLayout";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../store/userState";
-import { authState } from "../store/authState";
-import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
   const [user, setUser] = useRecoilState(userState);
-  const setIsAuth = useSetRecoilState(authState);
-  const navigate = useNavigate();
+  const [text, setText] = useState("");
 
   const [formData, setFormData] = useState({
-    username: user.username,
-    email: user.email,
-    avatar: user.avatar,
+    username: user.username || "",
+    email: user.email || "",
+    avatar: user.avatar || "",
     password: "",
   });
+
+  useEffect(() => {
+    setFormData({
+      username: user.username || "",
+      email: user.email || "",
+      avatar: user.avatar || "",
+      password: "",
+    });
+  }, [user]);
 
   const handleAvatarChange = (event) => {
     const file = event.target.files[0];
@@ -26,7 +32,6 @@ const Settings = () => {
         setFormData({ ...formData, avatar: reader.result });
       };
       reader.readAsDataURL(file);
-      console.log(user);
     }
   };
 
@@ -58,30 +63,11 @@ const Settings = () => {
 
       const updatedUser = await response.json();
       setUser(updatedUser);
-    } catch (error) {
-      throw error;
-    }
-  };
+      setText("User updated");
 
-  const handleDelete = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:4000/api/v1/user/delete`, {
-        method: "DELETE",
-        headers: {
-          token: `${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(`Failed to Delete user: ${errorMessage}`);
-      }
-
-      const Deleted = await response.json();
-      setUser({});
-      setIsAuth(false);
-      navigate("/");
+      setTimeout(() => {
+        setText("");
+      }, 2000);
     } catch (error) {
       throw error;
     }
@@ -138,15 +124,11 @@ const Settings = () => {
               className="text-white bg-gray-800 px-6 py-2 rounded-md w-full mt-2 text-sm sm:text-base"
             />
           </div>
-          <div className=" flex justify-between w-full">
+
+          <div className=" flex justify-between w-full items-center">
+            <div className=" text-xs sm:text-xl customText2">{text}</div>
             <button
-              className="py-3 px-5 sm:px-8  bg-red-500 rounded-lg hover:opacity-95"
-              onClick={handleDelete}
-            >
-              Delete
-            </button>
-            <button
-              className="py-3 px-5 sm:px-8  bg-green-500 rounded-lg hover:opacity-95"
+              className="py-3 px-5 sm:px-8  customBg4 rounded-lg hover:opacity-95"
               onClick={handleUpdate}
             >
               Update

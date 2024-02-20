@@ -1,14 +1,12 @@
 // PrivateRoute.js
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { authState } from "../store/authState";
+import { useRecoilState } from "recoil";
 import { userState } from "../store/userState";
 import axios from "axios";
 
 const PrivateRoute = ({ element }) => {
-  const setUser = useSetRecoilState(userState);
-  const [isAuth, setAuth] = useRecoilState(authState);
+  const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,25 +23,23 @@ const PrivateRoute = ({ element }) => {
             }
           );
 
-          const userData = response.data;
+          const userData = await response.data;
           setUser(userData);
-          setAuth(true);
         } else {
-          setAuth(false);
           setUser({});
           navigate("/signin");
         }
       } catch (error) {
-        console.error("Error fetching user data:", error.message);
-        setAuth(false);
         setUser({});
+        navigate("/signin");
+        console.error("Error fetching user data:", error.message);
       }
     };
 
     fetchUser();
   }, []);
 
-  return isAuth ? <Outlet /> : "";
+  return user ? <Outlet /> : "";
 };
 
 export default PrivateRoute;
