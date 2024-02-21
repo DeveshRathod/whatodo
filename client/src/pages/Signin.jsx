@@ -13,10 +13,12 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
 
   const handleEmailChange = (e) => {
+    setError("");
     setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
+    setError("");
     setPassword(e.target.value);
   };
 
@@ -38,10 +40,10 @@ const Signin = () => {
         setLoading(false);
         navigate("/");
       } else {
-        console.error("Invalid response data");
+        setError("Invalid response data");
       }
     } catch (error) {
-      console.error("Error signing in:", error);
+      setError("Error signing in:", error);
     } finally {
       setLoading(false);
     }
@@ -90,7 +92,6 @@ const Signin = () => {
             </div>
           )}
           {/* Error message */}
-          {error && <div className="text-red-500 mb-4">{error}</div>}
         </div>
         <div className="flex justify-center container mx-auto mt-6 text-slate-100 text-sm">
           <div className="flex gap-2">
@@ -100,6 +101,7 @@ const Signin = () => {
             </Link>
           </div>
         </div>
+        {error && <div className="text-red-500 mb-4">{error}</div>}
       </div>
     </div>
   );

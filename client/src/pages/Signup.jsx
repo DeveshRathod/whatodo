@@ -15,18 +15,22 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
 
   const handleUsernameChange = (e) => {
+    setError("");
     setUsername(e.target.value);
   };
 
   const handleEmailChange = (e) => {
+    setError("");
     setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
+    setError("");
     setPassword(e.target.value);
   };
 
   const handleConfirmPasswordChange = (e) => {
+    setError("");
     setConfirmPassword(e.target.value);
   };
 
@@ -130,8 +134,8 @@ const Signup = () => {
             </Link>
           </div>
         </div>
-        {error && <div className="text-red-500 mb-4">{error}</div>}
       </div>
+      {error && <div className="text-red-500 mb-4">{error}</div>}
     </div>
   );
 };
