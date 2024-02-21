@@ -19,9 +19,11 @@ const todoSchema = new mongoose.Schema({
     type: String,
     enum: ["pending", "inProgress", "completed"],
     default: "pending",
+    required: true,
   },
   dueDate: {
     type: Date,
+    required: true,
   },
   tags: {
     type: [String],
@@ -30,6 +32,7 @@ const todoSchema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   createdAt: {
     type: Date,

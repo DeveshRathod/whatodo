@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../components/SettingsLayout";
+import Layout from "../components/Layout";
 import { useRecoilState } from "recoil";
 import { userState } from "../store/userState";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -84,7 +84,7 @@ const Settings = () => {
 
   return (
     <Layout>
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-10">
         <div className="w-fit sm:w-full max-w-md">
           <h1 className="text-2xl font-bold mb-4 text-center">Settings</h1>
           <div className="flex justify-center mb-4">

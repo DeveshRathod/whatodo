@@ -10,6 +10,7 @@ import RuleIcon from "@mui/icons-material/Rule";
 
 const Layout = ({ children }) => {
   const user = useRecoilValue(userState);
+  const pathname = window.location.pathname;
 
   return (
     <div className="flex flex-row w-full h-screen text-white">
@@ -63,7 +64,6 @@ const Layout = ({ children }) => {
       <div className="flex flex-col w-4/5">
         <div className="h-20 customBg2 flex p-3 justify-end pr-6">
           <div>
-            {/* Apply styles for user image */}
             <img
               src={user.avatar}
               alt="User"
@@ -72,35 +72,37 @@ const Layout = ({ children }) => {
           </div>
         </div>
         <div className="flex-grow customBg3 flex flex-col sm:w-full">
-          <div className="h-25 sm:h-20">
-            <div className="flex justify-between items-center p-1 sm:p-4  flex-col sm:flex-row-reverse">
-              <div>
-                <input
-                  type="text"
-                  className="text-white bg-gray-800 px-6 py-2 rounded-md w-full sm:w-auto mt-2 sm:mt-0 text-sm sm:text-base"
-                  placeholder="Search..."
-                />
-              </div>
-              <div className=" flex gap-4">
+          {pathname !== "/setting" && (
+            <div className="h-25 sm:h-20">
+              <div className="flex justify-between items-center p-1 sm:p-4  flex-col sm:flex-row-reverse">
                 <div>
-                  <select className="text-white bg-gray-800 px-2 py-2 rounded-md sm:w-auto mt-2 sm:mt-0 text-sm sm:text-base">
-                    <option value="">Order</option>
-                    <option value="filter1">ASCE</option>
-                    <option value="filter2">DSCE</option>
-                  </select>
+                  <input
+                    type="text"
+                    className="text-white bg-gray-800 px-6 py-2 rounded-md w-full sm:w-auto mt-2 sm:mt-0 text-sm sm:text-base"
+                    placeholder="Search..."
+                  />
                 </div>
-                <div>
-                  <select className="text-white bg-gray-800 px-4 py-2 rounded-md sm:w-auto mt-2 sm:mt-0 text-sm sm:text-base">
-                    <option className=" text-red-500" value="">
-                      Priority
-                    </option>
-                    <option value="filter1">Low - High</option>
-                    <option value="filter2">High - Low</option>
-                  </select>
+                <div className=" flex gap-4">
+                  <div>
+                    <select className="text-white bg-gray-800 px-2 py-2 rounded-md sm:w-auto mt-2 sm:mt-0 text-sm sm:text-base">
+                      <option value="">Order</option>
+                      <option value="filter1">ASCE</option>
+                      <option value="filter2">DSCE</option>
+                    </select>
+                  </div>
+                  <div>
+                    <select className="text-white bg-gray-800 px-4 py-2 rounded-md sm:w-auto mt-2 sm:mt-0 text-sm sm:text-base">
+                      <option className=" text-red-500" value="">
+                        Priority
+                      </option>
+                      <option value="filter1">Low - High</option>
+                      <option value="filter2">High - Low</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           <div className="h-full">{children}</div>
         </div>
