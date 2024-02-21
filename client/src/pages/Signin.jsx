@@ -43,7 +43,7 @@ const Signin = () => {
         setError("Invalid response data");
       }
     } catch (error) {
-      setError("Error signing in:", error);
+      setError(error.response.data.message);
     } finally {
       setLoading(false);
     }

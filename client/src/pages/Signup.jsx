@@ -61,7 +61,7 @@ const Signup = () => {
         setError("Error Signing Up");
       }
     } catch (error) {
-      setError("Failed to sign up");
+      setError(error.response.data.message);
     } finally {
       setLoading(false);
     }
@@ -134,8 +134,8 @@ const Signup = () => {
             </Link>
           </div>
         </div>
+        {error && <div className="text-red-500 mb-4">{error}</div>}
       </div>
-      {error && <div className="text-red-500 mb-4">{error}</div>}
     </div>
   );
 };
