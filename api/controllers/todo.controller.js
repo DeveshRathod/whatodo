@@ -79,7 +79,7 @@ export const updateTodo = async (req, res) => {
       return res.status(404).json({ message: "Todo Not Found" });
     }
 
-    const { title, description, priority, dueDate, actions } = req.body;
+    const { title, description, priority, dueDate } = req.body;
 
     const todo = await Todo.findById(todoId);
 
@@ -100,18 +100,73 @@ export const updateTodo = async (req, res) => {
       todo.dueDate = dueDate;
     }
 
-    if (Array.isArray(actions)) {
-      actions.forEach(({ action, tag }) => {
-        if (action === "add" && tag) {
-          todo.tags.push(tag);
-        } else if (action === "delete" && tag) {
-          const index = todo.tags.indexOf(tag);
-          if (index !== -1) {
-            todo.tags.splice(index, 1);
-          }
-        }
-      });
+    await todo.save();
+
+    res.json(todo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const addTags = async (req, res) => {
+  const todoId = req.params.todoId;
+  const { tags } = req.body;
+
+  try {
+    const todo = await Todo.findById(todoId);
+
+    if (!todo) {
+      return res.status(404).json({ message: "Todo Not Found" });
     }
+
+    if (typeof tags !== "string" || tags.trim() === "") {
+      return res
+        .status(400)
+        .json({ message: "Tags must be provided as a non-empty string" });
+    }
+
+    const tagsArray = tags.split(",").map((tag) => tag.trim());
+
+    if (tagsArray.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Tags must be provided as a non-empty string" });
+    }
+
+    todo.tags.push(...tagsArray);
+    await todo.save();
+
+    res.json(todo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const removeTag = async (req, res) => {
+  const todoId = req.params.todoId;
+  const { tags } = req.body;
+
+  try {
+    const todo = await Todo.findById(todoId);
+
+    if (!todo) {
+      return res.status(404).json({ message: "Todo Not Found" });
+    }
+
+    if (!Array.isArray(tags) || tags.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Tags must be provided as a non-empty array" });
+    }
+
+    tags.forEach((tagToRemove) => {
+      const index = todo.tags.indexOf(tagToRemove);
+      if (index !== -1) {
+        todo.tags.splice(index, 1);
+      }
+    });
 
     await todo.save();
 
