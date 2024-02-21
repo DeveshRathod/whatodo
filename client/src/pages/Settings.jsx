@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import Layout from "../components/SettingsLayout";
 import { useRecoilState } from "recoil";
 import { userState } from "../store/userState";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
   const [user, setUser] = useRecoilState(userState);
   const [text, setText] = useState("");
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: user.username || "",
@@ -73,6 +76,12 @@ const Settings = () => {
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUser({});
+    navigate("/signin");
+  };
+
   return (
     <Layout>
       <div className="flex justify-center">
@@ -125,13 +134,19 @@ const Settings = () => {
             />
           </div>
 
-          <div className=" flex justify-between w-full items-center">
+          <div className=" flex justify-between w-full items-center pt-3">
             <div className=" text-xs sm:text-xl customText2">{text}</div>
             <button
-              className="py-3 px-5 sm:px-8  customBg4 rounded-lg hover:opacity-95"
+              className="py-1 sm:py-2 px-5 sm:px-8  customBg4 rounded-lg hover:opacity-95"
               onClick={handleUpdate}
             >
               Update
+            </button>
+          </div>
+
+          <div className=" flex items-center justify-center pt-3">
+            <button onClick={logout} className="  customText1">
+              <LogoutIcon /> Logout
             </button>
           </div>
         </div>
